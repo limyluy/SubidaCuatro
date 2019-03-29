@@ -7,6 +7,7 @@ import java.util.List;
 public class Local {
 
     private String id;
+    private String IdCliente;
     private String nombre;
     private String direccion;
     private String telefono;
@@ -22,15 +23,16 @@ public class Local {
     private String imgLogo;
     private long numRecomendado;
     private Boolean actualizado;
-    private List<String> clientes;
+    private List<String> productos;
     private List<String> etiquetas;
     private String color;
 
     public Local() {
     }
 
-    public Local(String nombre, String direccion, String telefono, String descripcion, GeoPoint ubicacion, int atencion, int calidad, int precio, boolean tarjeta, boolean garaje, boolean garantia, String imgLocal, String imgLogo, long numRecomendado, Boolean actualizado, List<String> clientes, List<String> etiquetas, String color) {
+    public Local(String idCliente, String nombre, String direccion, String telefono, String descripcion, GeoPoint ubicacion, int atencion, int calidad, int precio, boolean tarjeta, boolean garaje, boolean garantia, String imgLocal, String imgLogo, long numRecomendado, Boolean actualizado, List<String> productos, List<String> etiquetas, String color) {
         String id = "locuno"+Math.random();
+        IdCliente = idCliente;
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
@@ -46,7 +48,7 @@ public class Local {
         this.imgLogo = imgLogo;
         this.numRecomendado = numRecomendado;
         this.actualizado = actualizado;
-        this.clientes = clientes;
+        this.productos = productos;
         this.etiquetas = etiquetas;
         this.color = color;
         this.id = id;
@@ -58,6 +60,14 @@ public class Local {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getIdCliente() {
+        return IdCliente;
+    }
+
+    public void setIdCliente(String idCliente) {
+        IdCliente = idCliente;
     }
 
     public String getNombre() {
@@ -180,12 +190,12 @@ public class Local {
         this.actualizado = actualizado;
     }
 
-    public List<String> getClientes() {
-        return clientes;
+    public List<String> getProductos() {
+        return productos;
     }
 
-    public void setClientes(List<String> clientes) {
-        this.clientes = clientes;
+    public void setProductos(List<String> productos) {
+        this.productos = productos;
     }
 
     public List<String> getEtiquetas() {

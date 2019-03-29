@@ -30,6 +30,7 @@ import com.example.subidacuatro.Entidades.Local;
 import com.example.subidacuatro.MainActivity;
 import com.example.subidacuatro.R;
 import com.example.subidacuatro.Utilidades;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
@@ -62,6 +63,10 @@ public class CrearLocal extends AppCompatActivity {
     private ImageView imgLocal;
     private ImageView imgLogo;
     private Button imgChooseColor;
+    private Button btnSubirImagenes;
+    private TextView link;
+    private TextView linkDos;
+    private TextView linkTres;
 
     private double longitud;
     private double latitud;
@@ -69,7 +74,6 @@ public class CrearLocal extends AppCompatActivity {
     private Uri imgLogoUri;
 
     private List<String> arrayEtiquetas = new ArrayList<>();
-    private boolean locationPrendida;
     private boolean trazado;
     private Button btnCrear;
     private Button btnCancelar;
@@ -84,8 +88,10 @@ public class CrearLocal extends AppCompatActivity {
     private GeoPoint geoPoint;
 
     private int mdefaultColor;
+    private String idCliente;
 
-
+    private String logo;
+    private String local;
 
 
     @Override
@@ -93,7 +99,6 @@ public class CrearLocal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_local);
         getSupportActionBar();
-
 
 
         edtNombre = findViewById(R.id.edt_nom_local);
@@ -115,19 +120,21 @@ public class CrearLocal extends AppCompatActivity {
         imgLogo = findViewById(R.id.img_logo);
         imgChooseColor = findViewById(R.id.img_choose_color_crear_local);
         tooCrearLocal = findViewById(R.id.too_crear_local);
+        btnSubirImagenes = findViewById(R.id.btn_subir_img_local);
+        link = findViewById(R.id.txt_link);
+        linkDos = findViewById(R.id.txt_link_dos);
+        linkTres =findViewById(R.id.txt_link_tres);
 
         context = this;
         utilidades = new Utilidades(context);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        mdefaultColor = ContextCompat.getColor(CrearLocal.this,R.color.colorAccent);
+        mdefaultColor = ContextCompat.getColor(CrearLocal.this, R.color.colorAccent);
 
 
-
-        final String idCliente = getIntent().getStringExtra("id");
+        idCliente = getIntent().getStringExtra("id");
         final String nomCliente = getIntent().getStringExtra("nombre");
 
-            tooCrearLocal.setTitle(nomCliente);
-
+        tooCrearLocal.setTitle(nomCliente);
 
 
         btnCrear.setOnClickListener(new View.OnClickListener() {
@@ -150,15 +157,22 @@ public class CrearLocal extends AppCompatActivity {
         });
         btnImgLogo.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {               buscadorImagen(IMAGEN_PUESTA_LOGO);            }
+            public void onClick(View v) {
+                buscadorImagen(IMAGEN_PUESTA_LOGO);
+            }
         });
         btnUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // pregusntar los permisos
+
                 if (!isLocationEnabled()) {
-                    showAlert(); return;
-                }else{geoPoint = obtenerGeoPoint();
-                btnUbicacion.setBackgroundColor(getResources().getColor(R.color.colorAccent));}
+                    showAlert();
+                    return;
+                } else {
+                    geoPoint = obtenerGeoPoint();
+                    btnUbicacion.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                }
             }
         });
 
@@ -168,6 +182,30 @@ public class CrearLocal extends AppCompatActivity {
                 escogerColor();
             }
         });
+        btnSubirImagenes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               new Thread(new Runnable() {
+                   @Override
+                   public void run() {
+                       new Thread(new Runnable() {
+                           @Override
+                           public void run() {
+                               utilidades.subirImagen(LOCALES,imgLocalUri,context,link);
+                               utilidades.subirImagen(LOCALES,imgLogoUri,context,linkDos);
+                           }
+                       }).start();
+
+
+                   }
+               }).start();
+
+                btnSubirImagenes.setVisibility(View.INVISIBLE);
+                btnCrear.setVisibility(View.VISIBLE);
+            }
+        });
+
     }
 
     private void escogerColor() {
@@ -181,15 +219,16 @@ public class CrearLocal extends AppCompatActivity {
             public void onOk(AmbilWarnaDialog dialog, int color) {
                 mdefaultColor = color;
                 imgChooseColor.setBackgroundColor(mdefaultColor);
+
             }
         });
         colorPiker.show();
     }
 
     private void llenarEtiquetas() {
-        if (edtEtiquetas.getText().toString().isEmpty()){
+        if (edtEtiquetas.getText().toString().isEmpty()) {
             Toast.makeText(this, "Campo basio", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             arrayEtiquetas.add(edtEtiquetas.getText().toString());
             mostrarEtiquetas();
             edtEtiquetas.setText("");
@@ -200,7 +239,7 @@ public class CrearLocal extends AppCompatActivity {
 
         String resultados = "";
         for (int i = 0; i < arrayEtiquetas.size(); i++)
-            if(i + 1 < arrayEtiquetas.size())
+            if (i + 1 < arrayEtiquetas.size())
                 resultados += arrayEtiquetas.get(i) + " | ";
             else
                 resultados += arrayEtiquetas.get(i);
@@ -209,13 +248,14 @@ public class CrearLocal extends AppCompatActivity {
     }
 
     private void buscadorImagen(int codImagen) {
-        Intent intent =  new Intent();
+        Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent,codImagen);
+        startActivityForResult(intent, codImagen);
     }
 
     private GeoPoint obtenerGeoPoint() {
+
         LocationListener listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -241,10 +281,9 @@ public class CrearLocal extends AppCompatActivity {
             }
         };
 
-        GeoPoint geoPoint = new GeoPoint(latitud, longitud);
-
-
-        return geoPoint;
+        GeoPoint geoPoint2 = new GeoPoint(latitud, longitud);
+        linkTres.setText(geoPoint2.toString());
+        return geoPoint2;
     }
 
     private void showAlert() {
@@ -274,70 +313,69 @@ public class CrearLocal extends AppCompatActivity {
 
     private void crearLocalBd(String id) {
 
-        if (edtNombre.getText().toString().isEmpty() || edtDescripcion.getText().toString().isEmpty() || geoPoint == null || edtTelefono.getText().toString().isEmpty()){
+        if (edtNombre.getText().toString().isEmpty() || edtDescripcion.getText().toString().isEmpty() || geoPoint == null || edtTelefono.getText().toString().isEmpty()) {
             Toast.makeText(context, "Datos insuficientes", Toast.LENGTH_SHORT).show();
             return;
         }
 
-         String nombre = edtNombre.getText().toString();
-         String direccion = "no direccion";
-         String telefono = edtTelefono.getText().toString();
-         String descripcion = edtDescripcion.getText().toString();
-         GeoPoint ubicacion = geoPoint;
-         int atencion = 0;
-         int calidad = 0;
-         int precio = 0;
-         boolean tarjeta = chbTarjeta.isActivated();
-         boolean garaje = chbGarage.isActivated();
-         boolean garantia = chbGarantia.isActivated();
-         String imgLocal;
-         String imgLogo;
-         long numRecomendado = 0;
-         Boolean actualizado = true;
-         List<String> clientes = new ArrayList<>() ;
-         List<String> etiquetas = arrayEtiquetas;
-         String color;
+        String idCli = idCliente;
+        String nombre = edtNombre.getText().toString();
+        String direccion = "no direccion";
+        String telefono = edtTelefono.getText().toString();
+        String descripcion = edtDescripcion.getText().toString();
+        GeoPoint ubicacion = geoPoint;
+        int atencion = 0;
+        int calidad = 0;
+        int precio = 0;
+        boolean tarjeta = chbTarjeta.isActivated();
+        boolean garaje = chbGarage.isActivated();
+        boolean garantia = chbGarantia.isActivated();
+        String imgLocal = link.getText().toString();
+        String imgLogo = linkDos.getText().toString();
+        long numRecomendado = 0;
+        Boolean actualizado = true;
+        List<String> productos = new ArrayList<>();
+        List<String> etiquetas = arrayEtiquetas;
+        String color;
 
 
-        if (!(edtDireccion.getText().toString().isEmpty())){
+        if (!(edtDireccion.getText().toString().isEmpty())) {
             direccion = edtDireccion.getText().toString();
         }
 
-        clientes.add(id);
 
-        if (imgLocalUri == null || imgLogoUri == null){
+        if (imgLocalUri == null || imgLogoUri == null) {
             Toast.makeText(this, "Imagenes no Seleccionadas", Toast.LENGTH_SHORT).show();
             return;
         }
-        imgLocal = utilidades.subirImagen(LOCALES,imgLocalUri,context);
-        imgLogo = utilidades.subirImagen(LOCALES,imgLogoUri,context);
 
-        //Local local = new Local(nombre,direccion,telefono,descripcion,ubicacion,atencion,calidad,precio,tarjeta,garaje,garantia,imgLocal,imgLogo,numRecomendado,actualizado,clientes,etiquetas);
+        color = String.valueOf(mdefaultColor);
+
+        Local local = new Local(idCli, nombre, direccion, telefono, descripcion, ubicacion, atencion, calidad, precio, tarjeta, garaje, garantia, imgLocal, imgLogo, numRecomendado, actualizado, productos, etiquetas, color);
 
 
-       // utilidades.llenarLocal(local);
+        utilidades.llenarLocal(local);
         Toast.makeText(this, "Local Creado", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(CrearLocal.this, MainActivity.class));
 
 
-
-        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == IMAGEN_PUESTA && resultCode ==   RESULT_OK
-                && data != null && data.getData() != null){
+        if (requestCode == IMAGEN_PUESTA && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
 
-            imgLocalUri =data.getData();
+            imgLocalUri = data.getData();
 
             Picasso.with(this).load(imgLocalUri).into(imgLocal);
 
         }
 
         if (requestCode == IMAGEN_PUESTA_LOGO && resultCode == RESULT_OK
-                && data != null && data.getData() != null){
+                && data != null && data.getData() != null) {
 
             imgLogoUri = data.getData();
 

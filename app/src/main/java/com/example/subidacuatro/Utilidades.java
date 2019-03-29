@@ -2,9 +2,9 @@ package com.example.subidacuatro;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.subidacuatro.Entidades.Cliente;
 import com.example.subidacuatro.Entidades.Historial;
 import com.example.subidacuatro.Entidades.Local;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -22,9 +23,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.text.Format;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.zip.DataFormatException;
+import java.util.List;
 
 
 public class Utilidades {
@@ -36,7 +37,7 @@ public class Utilidades {
     private FirebaseFirestore db;
     private StorageReference storage;
 
-   private Context context;
+    private Context context;
 
     public Utilidades(Context context) {
         db = FirebaseFirestore.getInstance();
@@ -110,24 +111,23 @@ public class Utilidades {
         return local.getId();
     }
 
-    public String subirImagen(String carpeta, Uri uri, final Context context){
+    public void subirImagen (String carpeta, final Uri uri, final Context context, final TextView textView) {
         storage = FirebaseStorage.getInstance().getReference(carpeta);
-        String direccion = null;
+        StorageReference reference = storage.child(System.currentTimeMillis() + "."
+                + getFileExtencion(uri));
 
-        StorageReference reference = storage.child(System.currentTimeMillis()+"."
-        +getFileExtencion(uri));
 
         reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Task task = taskSnapshot.getStorage().getDownloadUrl();
-                while (!task.isSuccessful());
+                while (!task.isSuccessful()) ;
                 Uri uri1 = (Uri) task.getResult();
                 Toast.makeText(context, "Imagen Subida", Toast.LENGTH_SHORT).show();
 
-                String direccion = uri1.toString();
-
-
+                textView.setText(String.valueOf(uri1));
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -138,9 +138,10 @@ public class Utilidades {
             }
         });
 
-        return direccion;
+
     }
-    private String getFileExtencion( Uri uri){
+
+    private String getFileExtencion(Uri uri) {
         ContentResolver cR = context.getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
