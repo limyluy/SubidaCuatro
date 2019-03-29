@@ -14,6 +14,9 @@ import com.example.subidacuatro.MainActivity;
 import com.example.subidacuatro.R;
 import com.example.subidacuatro.Utilidades;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CrearCliente extends AppCompatActivity {
 
     private EditText edtNombre;
@@ -47,8 +50,8 @@ public class CrearCliente extends AppCompatActivity {
                     String nombre = edtNombre.getText().toString();
                     String telefono = edtTelefono.getText().toString();
                     String direccion = edtDireccion.getText().toString();
-
-                    Cliente cliente = new Cliente(nombre,direccion,telefono,false,null);
+                    List<String> locales = new ArrayList<>();
+                    Cliente cliente = new Cliente(nombre,direccion,telefono,false,locales);
                     utilidades.llenarCliente(cliente);
                     startActivity(new Intent(CrearCliente.this, MainActivity.class));
 
