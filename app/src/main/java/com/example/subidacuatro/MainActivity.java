@@ -51,6 +51,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, VerClientes.class));
             }
         });
+
+        btnNuevoLocal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               Intent intent = new Intent(MainActivity.this,VerClientes.class);
+               intent.putExtra("local",true);
+               startActivity(intent);
+            }
+        });
     }
 
 }

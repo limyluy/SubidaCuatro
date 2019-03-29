@@ -123,6 +123,7 @@ public class Utilidades {
                 Task task = taskSnapshot.getStorage().getDownloadUrl();
                 while (!task.isSuccessful());
                 Uri uri1 = (Uri) task.getResult();
+                Toast.makeText(context, "Imagen Subida", Toast.LENGTH_SHORT).show();
 
                 String direccion = uri1.toString();
 

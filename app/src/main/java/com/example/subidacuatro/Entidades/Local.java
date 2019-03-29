@@ -24,12 +24,12 @@ public class Local {
     private Boolean actualizado;
     private List<String> clientes;
     private List<String> etiquetas;
+    private String color;
 
     public Local() {
     }
 
-    public Local(String nombre, String direccion, String telefono, String descripcion, GeoPoint ubicacion, int atencion, int calidad, int precio, boolean tarjeta, boolean garaje, boolean garantia, String imgLocal, String imgLogo, long numRecomendado, Boolean actualizado, List<String> clientes, List<String> etiquetas) {
-
+    public Local(String nombre, String direccion, String telefono, String descripcion, GeoPoint ubicacion, int atencion, int calidad, int precio, boolean tarjeta, boolean garaje, boolean garantia, String imgLocal, String imgLogo, long numRecomendado, Boolean actualizado, List<String> clientes, List<String> etiquetas, String color) {
         String id = "locuno"+Math.random();
         this.nombre = nombre;
         this.direccion = direccion;
@@ -48,6 +48,7 @@ public class Local {
         this.actualizado = actualizado;
         this.clientes = clientes;
         this.etiquetas = etiquetas;
+        this.color = color;
         this.id = id;
     }
 
@@ -193,5 +194,13 @@ public class Local {
 
     public void setEtiquetas(List<String> etiquetas) {
         this.etiquetas = etiquetas;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

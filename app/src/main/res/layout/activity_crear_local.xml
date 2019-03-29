@@ -6,13 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".Actividades.CrearLocal">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/too_crear_local"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/edt_nom_local"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:hint="Nombre Completo Local"
@@ -20,7 +31,7 @@
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/too_crear_local" />
 
 
     <EditText
@@ -41,16 +52,13 @@
 
     <EditText
         android:id="@+id/edt_tel_local"
-        android:layout_width="match_parent"
+        android:layout_width="228dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:hint="Telefono"
         android:inputType="phone"
         android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt_des_local" />
 
@@ -214,6 +222,20 @@
         android:text="cancelar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_etiquetas" />
+
+
+    <Button
+        android:id="@+id/img_choose_color_crear_local"
+        android:layout_width="143dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Selecciona Color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/edt_tel_local"
+        app:layout_constraintTop_toBottomOf="@+id/edt_des_local" />
 
 
 </android.support.constraint.ConstraintLayout>

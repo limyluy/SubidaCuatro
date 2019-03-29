@@ -1,5 +1,6 @@
 package com.example.subidacuatro.Actividades;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,11 +8,15 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -20,7 +25,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.example.subidacuatro.Entidades.Local;
+import com.example.subidacuatro.MainActivity;
 import com.example.subidacuatro.R;
 import com.example.subidacuatro.Utilidades;
 import com.google.firebase.firestore.GeoPoint;
@@ -30,6 +37,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class CrearLocal extends AppCompatActivity {
 
@@ -52,6 +61,7 @@ public class CrearLocal extends AppCompatActivity {
     private TextView txtEtiquetas;
     private ImageView imgLocal;
     private ImageView imgLogo;
+    private Button imgChooseColor;
 
     private double longitud;
     private double latitud;
@@ -63,6 +73,7 @@ public class CrearLocal extends AppCompatActivity {
     private boolean trazado;
     private Button btnCrear;
     private Button btnCancelar;
+    private Toolbar tooCrearLocal;
     LocationManager locationManager;
 
     private StorageReference mStoraRef;
@@ -72,11 +83,16 @@ public class CrearLocal extends AppCompatActivity {
     private Utilidades utilidades;
     private GeoPoint geoPoint;
 
+    private int mdefaultColor;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_local);
+        getSupportActionBar();
 
 
 
@@ -97,11 +113,22 @@ public class CrearLocal extends AppCompatActivity {
         btnCancelar = findViewById(R.id.btn_cancelar_nuevolocal);
         imgLocal = findViewById(R.id.img_local);
         imgLogo = findViewById(R.id.img_logo);
+        imgChooseColor = findViewById(R.id.img_choose_color_crear_local);
+        tooCrearLocal = findViewById(R.id.too_crear_local);
 
         context = this;
         utilidades = new Utilidades(context);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mdefaultColor = ContextCompat.getColor(CrearLocal.this,R.color.colorAccent);
+
+
 
         final String idCliente = getIntent().getStringExtra("id");
+        final String nomCliente = getIntent().getStringExtra("nombre");
+
+            tooCrearLocal.setTitle(nomCliente);
+
+
 
         btnCrear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,9 +157,33 @@ public class CrearLocal extends AppCompatActivity {
             public void onClick(View v) {
                 if (!isLocationEnabled()) {
                     showAlert(); return;
-                }else{geoPoint = obtenerGeoPoint();}
+                }else{geoPoint = obtenerGeoPoint();
+                btnUbicacion.setBackgroundColor(getResources().getColor(R.color.colorAccent));}
             }
         });
+
+        imgChooseColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                escogerColor();
+            }
+        });
+    }
+
+    private void escogerColor() {
+        AmbilWarnaDialog colorPiker = new AmbilWarnaDialog(this, mdefaultColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+            @Override
+            public void onCancel(AmbilWarnaDialog dialog) {
+                Toast.makeText(context, "No se elegio color", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onOk(AmbilWarnaDialog dialog, int color) {
+                mdefaultColor = color;
+                imgChooseColor.setBackgroundColor(mdefaultColor);
+            }
+        });
+        colorPiker.show();
     }
 
     private void llenarEtiquetas() {
@@ -245,6 +296,7 @@ public class CrearLocal extends AppCompatActivity {
          Boolean actualizado = true;
          List<String> clientes = new ArrayList<>() ;
          List<String> etiquetas = arrayEtiquetas;
+         String color;
 
 
         if (!(edtDireccion.getText().toString().isEmpty())){
@@ -260,6 +312,12 @@ public class CrearLocal extends AppCompatActivity {
         imgLocal = utilidades.subirImagen(LOCALES,imgLocalUri,context);
         imgLogo = utilidades.subirImagen(LOCALES,imgLogoUri,context);
 
+        //Local local = new Local(nombre,direccion,telefono,descripcion,ubicacion,atencion,calidad,precio,tarjeta,garaje,garantia,imgLocal,imgLogo,numRecomendado,actualizado,clientes,etiquetas);
+
+
+       // utilidades.llenarLocal(local);
+        Toast.makeText(this, "Local Creado", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(CrearLocal.this, MainActivity.class));
 
 
 

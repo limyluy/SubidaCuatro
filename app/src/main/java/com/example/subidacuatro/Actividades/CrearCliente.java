@@ -25,6 +25,8 @@ public class CrearCliente extends AppCompatActivity {
     private boolean trazado;
     private Button btnCrear;
     private Button btnCancelar;
+
+
     private Utilidades utilidades;
 
 
@@ -38,6 +40,8 @@ public class CrearCliente extends AppCompatActivity {
         edtDireccion = findViewById(R.id.edt_dir_cliente);
         btnCrear = findViewById(R.id.btn_crear_nuevocliente);
         btnCancelar = findViewById(R.id.btn_cancelar_nuevocliente);
+
+
         utilidades = new Utilidades(this);
 
 
