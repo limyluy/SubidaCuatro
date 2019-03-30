@@ -18,7 +18,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -46,7 +49,7 @@ public class Utilidades {
 
     public String llenarCliente(final Cliente cliente) {
 
-        db.collection(CLIENTES).document().set(cliente).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection(CLIENTES).document(cliente.getId()).set(cliente).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(context, "Cliete " + cliente.getId() + "creado", Toast.LENGTH_SHORT).show();
@@ -96,7 +99,7 @@ public class Utilidades {
     }
 
     public String llenarLocal(final Local local) {
-        db.collection(LOCALES).document().set(local).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection(LOCALES).document(local.getId()).set(local).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(context, local.getId(), Toast.LENGTH_SHORT).show();
@@ -147,6 +150,20 @@ public class Utilidades {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
+    public void agregarlocalCliente(String idLocal,String idCliente) {
+
+
+        DocumentReference reference = db.collection(CLIENTES).document(idCliente);
+
+        reference.update("locales", FieldValue.arrayUnion(idLocal)).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, "Local asignado", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
 }
 
 

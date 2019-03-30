@@ -58,8 +58,8 @@
 
         <TextView
             android:id="@+id/txt_des_local_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="135dp"
+            android:layout_height="53dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
@@ -73,10 +73,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
             android:text="Direccion: "
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_des_local_card" />
 
         <TextView
             android:id="@+id/txt_dir_local_card"
@@ -84,7 +83,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
             android:text="xxxxxxxxxxx"
             app:layout_constraintStart_toEndOf="@+id/textView11"
             app:layout_constraintTop_toBottomOf="@+id/txt_des_local_card" />
@@ -181,7 +179,7 @@
             android:id="@+id/chb_garage_local_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:text="garage"
@@ -192,7 +190,7 @@
             android:id="@+id/chb_tarjeta_local_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:text="tarjeta"
@@ -203,7 +201,7 @@
             android:id="@+id/chb_garantia_local_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:text="garantia"
@@ -284,19 +282,19 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:text="Etiquetas: "
-            app:layout_constraintStart_toEndOf="@+id/textView6"
-            app:layout_constraintTop_toBottomOf="@+id/txt_num_pre_local_card" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
         <TextView
             android:id="@+id/txt_etiquetas_local_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:text="xx"
-            app:layout_constraintStart_toEndOf="@+id/textView6"
-            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+            app:layout_constraintStart_toEndOf="@+id/textView15"
+            app:layout_constraintTop_toBottomOf="@+id/txt_clientes_local_card" />
 
         <TextView
             android:id="@+id/textView6"
@@ -305,7 +303,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:text="Clientes: "
+            android:text="Locales: "
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -317,8 +315,8 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:text="xx"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintTop_toBottomOf="@+id/txt_num_pre_local_card" />
 
         <ImageView
             android:id="@+id/img_local_card"

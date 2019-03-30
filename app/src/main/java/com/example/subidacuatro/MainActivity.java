@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.subidacuatro.Actividades.CrearCliente;
 import com.example.subidacuatro.Actividades.VerClientes;
+import com.example.subidacuatro.Actividades.VerLocales;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
@@ -58,6 +59,13 @@ public class MainActivity extends AppCompatActivity {
                Intent intent = new Intent(MainActivity.this,VerClientes.class);
                intent.putExtra("local",true);
                startActivity(intent);
+            }
+        });
+
+        crvLocales.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, VerLocales.class));
             }
         });
     }

@@ -1,9 +1,13 @@
 package com.example.subidacuatro.Actividades;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.icu.text.MessagePattern;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -12,6 +16,8 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.graphics.drawable.ArgbEvaluator;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -78,7 +84,7 @@ public class CrearLocal extends AppCompatActivity {
     private Button btnCrear;
     private Button btnCancelar;
     private Toolbar tooCrearLocal;
-    LocationManager locationManager;
+
 
     private StorageReference mStoraRef;
     private StorageTask mUploadTask;
@@ -92,6 +98,9 @@ public class CrearLocal extends AppCompatActivity {
 
     private String logo;
     private String local;
+
+    private LocationManager locManager;
+    private Location loc;
 
 
     @Override
@@ -123,263 +132,216 @@ public class CrearLocal extends AppCompatActivity {
         btnSubirImagenes = findViewById(R.id.btn_subir_img_local);
         link = findViewById(R.id.txt_link);
         linkDos = findViewById(R.id.txt_link_dos);
-        linkTres =findViewById(R.id.txt_link_tres);
+        linkTres = findViewById(R.id.txt_link_tres);
 
         context = this;
         utilidades = new Utilidades(context);
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
         mdefaultColor = ContextCompat.getColor(CrearLocal.this, R.color.colorAccent);
-
-
         idCliente = getIntent().getStringExtra("id");
-        final String nomCliente = getIntent().getStringExtra("nombre");
 
-        tooCrearLocal.setTitle(nomCliente);
+        obtenerUbicacion();
 
 
-        btnCrear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                crearLocalBd(idCliente);
-            }
-        });
-        btnAddEtiquetas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                llenarEtiquetas();
-            }
-        });
-        btnImgLocal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                buscadorImagen(IMAGEN_PUESTA);
-            }
-        });
-        btnImgLogo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                buscadorImagen(IMAGEN_PUESTA_LOGO);
-            }
-        });
-        btnUbicacion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // pregusntar los permisos
-
-                if (!isLocationEnabled()) {
-                    showAlert();
-                    return;
-                } else {
-                    geoPoint = obtenerGeoPoint();
-                    btnUbicacion.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            btnCrear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    crearLocalBd(idCliente);
                 }
-            }
-        });
+            });
+            btnAddEtiquetas.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    llenarEtiquetas();
+                }
+            });
+            btnImgLocal.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    buscadorImagen(IMAGEN_PUESTA);
+                }
+            });
+            btnImgLogo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    buscadorImagen(IMAGEN_PUESTA_LOGO);
+                }
+            });
+            btnUbicacion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    obtenerUbicacion();
+                    btnUbicacion.setText(String.valueOf(geoPoint.getLatitude()));
+                }
+            });
+            imgChooseColor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    escogerColor();
+                }
+            });
+            btnSubirImagenes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-        imgChooseColor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                escogerColor();
-            }
-        });
-        btnSubirImagenes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-               new Thread(new Runnable() {
-                   @Override
-                   public void run() {
-                       new Thread(new Runnable() {
-                           @Override
-                           public void run() {
-                               utilidades.subirImagen(LOCALES,imgLocalUri,context,link);
-                               utilidades.subirImagen(LOCALES,imgLogoUri,context,linkDos);
-                           }
-                       }).start();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    utilidades.subirImagen(LOCALES, imgLocalUri, context, link);
+                                    utilidades.subirImagen(LOCALES, imgLogoUri, context, linkDos);
+                                }
+                            }).start();
 
 
-                   }
-               }).start();
+                        }
+                    }).start();
 
-                btnSubirImagenes.setVisibility(View.INVISIBLE);
-                btnCrear.setVisibility(View.VISIBLE);
-            }
-        });
+                    btnSubirImagenes.setVisibility(View.INVISIBLE);
+                    btnCrear.setVisibility(View.VISIBLE);
+                }
+            });
 
-    }
+        }
 
-    private void escogerColor() {
-        AmbilWarnaDialog colorPiker = new AmbilWarnaDialog(this, mdefaultColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
-            @Override
-            public void onCancel(AmbilWarnaDialog dialog) {
-                Toast.makeText(context, "No se elegio color", Toast.LENGTH_SHORT).show();
-            }
+    private void obtenerUbicacion() {
+        ActivityCompat.requestPermissions(CrearLocal.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(context, "Permiso de Ubicaion no Activado", Toast.LENGTH_SHORT).show();
 
-            @Override
-            public void onOk(AmbilWarnaDialog dialog, int color) {
-                mdefaultColor = color;
-                imgChooseColor.setBackgroundColor(mdefaultColor);
-
-            }
-        });
-        colorPiker.show();
-    }
-
-    private void llenarEtiquetas() {
-        if (edtEtiquetas.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Campo basio", Toast.LENGTH_SHORT).show();
+            return;
         } else {
-            arrayEtiquetas.add(edtEtiquetas.getText().toString());
-            mostrarEtiquetas();
-            edtEtiquetas.setText("");
+
+            locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            loc = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            geoPoint = new GeoPoint(loc.getLatitude(),loc.getLongitude());
+
         }
     }
 
-    private void mostrarEtiquetas() {
+    private void escogerColor () {
+            AmbilWarnaDialog colorPiker = new AmbilWarnaDialog(this, mdefaultColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+                @Override
+                public void onCancel(AmbilWarnaDialog dialog) {
+                    Toast.makeText(context, "No se elegio color", Toast.LENGTH_SHORT).show();
+                }
 
-        String resultados = "";
-        for (int i = 0; i < arrayEtiquetas.size(); i++)
-            if (i + 1 < arrayEtiquetas.size())
-                resultados += arrayEtiquetas.get(i) + " | ";
-            else
-                resultados += arrayEtiquetas.get(i);
+                @Override
+                public void onOk(AmbilWarnaDialog dialog, int color) {
+                    mdefaultColor = color;
+                    imgChooseColor.setBackgroundColor(mdefaultColor);
 
-        txtEtiquetas.setText(resultados);
-    }
+                }
+            });
+            colorPiker.show();
+        }
 
-    private void buscadorImagen(int codImagen) {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, codImagen);
-    }
+        private void llenarEtiquetas () {
+            if (edtEtiquetas.getText().toString().isEmpty()) {
+                Toast.makeText(this, "Campo basio", Toast.LENGTH_SHORT).show();
+            } else {
+                arrayEtiquetas.add(edtEtiquetas.getText().toString());
+                mostrarEtiquetas();
+                edtEtiquetas.setText("");
+            }
+        }
 
-    private GeoPoint obtenerGeoPoint() {
+        private void mostrarEtiquetas () {
 
-        LocationListener listener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
+            String resultados = "";
+            for (int i = 0; i < arrayEtiquetas.size(); i++)
+                if (i + 1 < arrayEtiquetas.size())
+                    resultados += arrayEtiquetas.get(i) + " | ";
+                else
+                    resultados += arrayEtiquetas.get(i);
 
-                longitud = location.getLongitude();
-                latitud = location.getLatitude();
+            txtEtiquetas.setText(resultados);
+        }
+
+        private void buscadorImagen ( int codImagen){
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(intent, codImagen);
+        }
+
+
+        private void crearLocalBd (String id){
+
+            if (edtNombre.getText().toString().isEmpty() || edtDescripcion.getText().toString().isEmpty() || geoPoint == null || edtTelefono.getText().toString().isEmpty()) {
+                Toast.makeText(context, "Datos insuficientes", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String idCli = idCliente;
+            String nombre = edtNombre.getText().toString();
+            String direccion = "no direccion";
+            String telefono = edtTelefono.getText().toString();
+            String descripcion = edtDescripcion.getText().toString();
+            GeoPoint ubicacion = geoPoint;
+            int atencion = 0;
+            int calidad = 0;
+            int precio = 0;
+            boolean tarjeta =  chbTarjeta.isChecked();
+            boolean garaje = chbGarage.isChecked();
+            boolean garantia = chbGarantia.isChecked();
+            String imgLocal = link.getText().toString();
+            String imgLogo = linkDos.getText().toString();
+            long numRecomendado = 0;
+            Boolean actualizado = true;
+            List<String> productos = new ArrayList<>();
+            List<String> etiquetas = arrayEtiquetas;
+            String color;
+
+
+            if (!(edtDireccion.getText().toString().isEmpty())) {
+                direccion = edtDireccion.getText().toString();
+            }
+
+
+            if (imgLocalUri == null || imgLogoUri == null) {
+                Toast.makeText(this, "Imagenes no Seleccionadas", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            color = String.valueOf(mdefaultColor);
+
+
+
+            Local local = new Local(idCli, nombre, direccion, telefono, descripcion, ubicacion, atencion, calidad, precio, tarjeta, garaje, garantia, imgLocal, imgLogo, numRecomendado, actualizado, productos, etiquetas, color);
+
+
+          String idLocal = utilidades.llenarLocal(local);
+          if (idLocal != null){
+              utilidades.agregarlocalCliente(idLocal,idCliente);
+          }
+
+            Toast.makeText(this, "Local Creado", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(CrearLocal.this, MainActivity.class));
+
+
+        }
+
+        @Override
+        protected void onActivityResult ( int requestCode, int resultCode, @Nullable Intent data){
+            super.onActivityResult(requestCode, resultCode, data);
+
+            if (requestCode == IMAGEN_PUESTA && resultCode == RESULT_OK
+                    && data != null && data.getData() != null) {
+
+                imgLocalUri = data.getData();
+
+                Picasso.with(this).load(imgLocalUri).into(imgLocal);
 
             }
 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
+            if (requestCode == IMAGEN_PUESTA_LOGO && resultCode == RESULT_OK
+                    && data != null && data.getData() != null) {
 
+                imgLogoUri = data.getData();
+                Picasso.with(this).load(imgLogoUri).into(imgLogo);
             }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-
-        GeoPoint geoPoint2 = new GeoPoint(latitud, longitud);
-        linkTres.setText(geoPoint2.toString());
-        return geoPoint2;
-    }
-
-    private void showAlert() {
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle("Enable Location")
-                .setMessage("Su ubicación esta desactivada.\npor favor active su ubicación " +
-                        "usa esta app")
-                .setPositiveButton("Configuración de ubicación", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivity(myIntent);
-                    }
-                })
-                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                    }
-                });
-        dialog.show();
-    }
-
-    private boolean isLocationEnabled() {
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-    }
-
-    private void crearLocalBd(String id) {
-
-        if (edtNombre.getText().toString().isEmpty() || edtDescripcion.getText().toString().isEmpty() || geoPoint == null || edtTelefono.getText().toString().isEmpty()) {
-            Toast.makeText(context, "Datos insuficientes", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String idCli = idCliente;
-        String nombre = edtNombre.getText().toString();
-        String direccion = "no direccion";
-        String telefono = edtTelefono.getText().toString();
-        String descripcion = edtDescripcion.getText().toString();
-        GeoPoint ubicacion = geoPoint;
-        int atencion = 0;
-        int calidad = 0;
-        int precio = 0;
-        boolean tarjeta = chbTarjeta.isActivated();
-        boolean garaje = chbGarage.isActivated();
-        boolean garantia = chbGarantia.isActivated();
-        String imgLocal = link.getText().toString();
-        String imgLogo = linkDos.getText().toString();
-        long numRecomendado = 0;
-        Boolean actualizado = true;
-        List<String> productos = new ArrayList<>();
-        List<String> etiquetas = arrayEtiquetas;
-        String color;
-
-
-        if (!(edtDireccion.getText().toString().isEmpty())) {
-            direccion = edtDireccion.getText().toString();
-        }
-
-
-        if (imgLocalUri == null || imgLogoUri == null) {
-            Toast.makeText(this, "Imagenes no Seleccionadas", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        color = String.valueOf(mdefaultColor);
-
-        Local local = new Local(idCli, nombre, direccion, telefono, descripcion, ubicacion, atencion, calidad, precio, tarjeta, garaje, garantia, imgLocal, imgLogo, numRecomendado, actualizado, productos, etiquetas, color);
-
-
-        utilidades.llenarLocal(local);
-        Toast.makeText(this, "Local Creado", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(CrearLocal.this, MainActivity.class));
-
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == IMAGEN_PUESTA && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
-
-            imgLocalUri = data.getData();
-
-            Picasso.with(this).load(imgLocalUri).into(imgLocal);
-
-        }
-
-        if (requestCode == IMAGEN_PUESTA_LOGO && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
-
-            imgLogoUri = data.getData();
-
-            Picasso.with(this).load(imgLogoUri).into(imgLogo);
         }
     }
-}

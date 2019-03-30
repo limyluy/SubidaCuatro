@@ -81,6 +81,7 @@ public class VerClientes extends AppCompatActivity {
                 Intent intent = new Intent(VerClientes.this, CrearLocal.class);
                 intent.putExtra("nombre", cliente.getNombre());
                 intent.putExtra("id", cliente.getId());
+
                 startActivity(intent);
             }
         });
