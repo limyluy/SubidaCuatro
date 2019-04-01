@@ -68,6 +68,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, VerLocales.class));
             }
         });
+
+        btnNuevoProducto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,VerLocales.class);
+                intent.putExtra("producto",true);
+                startActivity(intent);
+            }
+        });
+
     }
 
 }

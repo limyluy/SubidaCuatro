@@ -15,6 +15,8 @@ import com.example.subidacuatro.Entidades.Local;
 import com.example.subidacuatro.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.protobuf.StringValue;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.List;
 public class LocalesAdaptador extends FirestoreRecyclerAdapter<Local, LocalesAdaptador.LocalViewHolder> {
 
     private Context context;
+    ClienteAdaptador.OnItemClickListener listener;
 
     public LocalesAdaptador(@NonNull FirestoreRecyclerOptions<Local> options,Context context) {
         super(options);
@@ -42,6 +45,8 @@ public class LocalesAdaptador extends FirestoreRecyclerAdapter<Local, LocalesAda
                 holder.etiquetas.setText(resultados);
             }
 
+
+
         holder.nombre.setText(model.getNombre());
         holder.id.setText(model.getId());
         holder.descripcion.setText(model.getDescripcion());
@@ -60,6 +65,7 @@ public class LocalesAdaptador extends FirestoreRecyclerAdapter<Local, LocalesAda
         Picasso.with(context).load(model.getImgLocal()).into(holder.imgLocal);
         Picasso.with(context).load(model.getImgLogo()).into(holder.imgLogo);
         holder.imgColor.setBackgroundColor(Integer.parseInt(model.getColor()));
+        holder.txtNumProductos.setText(String.valueOf( model.getProductos().size()));
 
     }
 
@@ -91,6 +97,7 @@ public class LocalesAdaptador extends FirestoreRecyclerAdapter<Local, LocalesAda
         ImageView imgLocal;
         ImageView imgLogo;
         ImageView imgColor;
+        TextView txtNumProductos;
 
 
 
@@ -117,6 +124,27 @@ public class LocalesAdaptador extends FirestoreRecyclerAdapter<Local, LocalesAda
             imgLocal = itemView.findViewById(R.id.img_local_card);
             imgLogo = itemView.findViewById(R.id.img_logo_card);
             imgColor = itemView.findViewById(R.id.img_color_local_card);
+            txtNumProductos = itemView.findViewById(R.id.txt_num_productos_local);
+
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onItemClick(getSnapshots().getSnapshot(position),position);
+                    }
+                }
+            });
         }
     }
+    public interface OnItemClickListener {
+        void onItemClick(DocumentSnapshot documentSnapshot, int position);
+    }
+
+    public void setOnItemClickListener(ClienteAdaptador.OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+
 }

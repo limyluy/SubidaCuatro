@@ -11,6 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+
         <TextView
             android:id="@+id/textView13"
             android:layout_width="wrap_content"
@@ -303,7 +305,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:text="Locales: "
+            android:text="Cliente: "
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -347,6 +349,30 @@
             android:layout_marginRight="8dp"
             app:layout_constraintEnd_toStartOf="@+id/img_local_card"
             app:layout_constraintTop_toBottomOf="@+id/chb_tarjeta_local_card" />
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Num Productos"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView15"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+
+        <TextView
+            android:id="@+id/txt_num_productos_local"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="xx"
+            app:layout_constraintStart_toEndOf="@+id/textView16"
+            app:layout_constraintTop_toBottomOf="@+id/txt_etiquetas_local_card"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
 
     </android.support.constraint.ConstraintLayout>
 

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.subidacuatro.Entidades.Cliente;
 import com.example.subidacuatro.Entidades.Historial;
 import com.example.subidacuatro.Entidades.Local;
+import com.example.subidacuatro.Entidades.Productos;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,6 +37,7 @@ public class Utilidades {
     private static final String CLIENTES = "clientes";
     private static final String HISTORIAL = "historial";
     private static final String LOCALES = "locales";
+    private static final String PRODUCTOS = "productos";
 
     private FirebaseFirestore db;
     private StorageReference storage;
@@ -161,6 +163,25 @@ public class Utilidades {
                 Toast.makeText(context, "Local asignado", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+    }
+
+    public String agregarProductoLocal(final Productos productos, String idLocal){
+
+        db.collection(PRODUCTOS).document(productos.getId()).set(productos).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, productos.getId(), Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "Fallo subida", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return productos.getId();
 
 
     }
