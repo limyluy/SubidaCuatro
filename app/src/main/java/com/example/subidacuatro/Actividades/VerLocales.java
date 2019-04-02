@@ -34,7 +34,7 @@ public class VerLocales extends AppCompatActivity {
     private FirebaseFirestore db;
     private  Context context;
     private Boolean vieneLocales;
-
+    private Boolean vieneEventos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +47,44 @@ public class VerLocales extends AppCompatActivity {
         crvNoLocal = findViewById(R.id.crv_nolocal_ver_locales);
 
         vieneLocales = getIntent().getBooleanExtra("producto",false);
+        vieneEventos = getIntent().getBooleanExtra("evento",false);
 
         context = this;
         db = FirebaseFirestore.getInstance();
         llenarRecyclerLocales();
+        if (vieneEventos){
+            cargarIntergasSeleccionEventos();
+        }
+
         if (vieneLocales){
             cargarInterfasSelccion();
         }
+    }
+
+    private void cargarIntergasSeleccionEventos() {
+        crvNoLocal.setVisibility(View.VISIBLE);
+        crvNoLocal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(VerLocales.this, CrearEvento.class);
+                intent.putExtra("nombre", "no cliente");
+                intent.putExtra("id", "no id");
+                startActivity(intent);
+            }
+        });
+
+        adaptador.setOnItemClickListener(new ClienteAdaptador.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+
+                Local local = documentSnapshot.toObject(Local.class);
+                Intent intent = new Intent(VerLocales.this, CrearEvento.class);
+                intent.putExtra("nombre", local.getNombre());
+                intent.putExtra("id", local.getId());
+
+                startActivity(intent);
+            }
+        });
     }
 
     private void cargarInterfasSelccion()

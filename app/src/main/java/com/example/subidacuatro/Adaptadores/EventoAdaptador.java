@@ -27,15 +27,16 @@ public class EventoAdaptador extends FirestoreRecyclerAdapter<Evento, EventoAdap
 
     @Override
     protected void onBindViewHolder(@NonNull EvetoViewHolder holder, int position, @NonNull Evento model) {
-        List<String> etiquetas = model.getCategoria();
+        List<String> categoria = model.getCategoria();
         String resultados = "";
-        for (int i = 0; i < etiquetas.size(); i++)
-            if (i + 1 < etiquetas.size()) {
-                resultados += etiquetas.get(i) + " | ";
+        for (int i = 0; i < categoria.size(); i++)
+            if (i + 1 < categoria.size()) {
+                resultados += categoria.get(i) + " | ";
             }else{
-                resultados += etiquetas.get(i);
+                resultados += categoria.get(i);
                 holder.cagegorias.setText(resultados);
             }
+
 
         holder.nombre.setText(model.getNombre());
         holder.descripcion.setText(model.getDescripcion());
@@ -44,6 +45,7 @@ public class EventoAdaptador extends FirestoreRecyclerAdapter<Evento, EventoAdap
         holder.descripcionAdi.setText(model.getDesAdicional());
         holder.btnFotos.setText("Fotos: " + String.valueOf(model.getFotos().size()));
         holder.btnLocales.setText("Locales: " + String.valueOf(model.getLocales().size()));
+
 
 
     }

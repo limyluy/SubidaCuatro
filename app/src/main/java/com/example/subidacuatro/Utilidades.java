@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.subidacuatro.Entidades.Cliente;
+import com.example.subidacuatro.Entidades.Evento;
 import com.example.subidacuatro.Entidades.Historial;
 import com.example.subidacuatro.Entidades.Local;
 import com.example.subidacuatro.Entidades.Productos;
@@ -38,6 +39,7 @@ public class Utilidades {
     private static final String HISTORIAL = "historial";
     private static final String LOCALES = "locales";
     private static final String PRODUCTOS = "productos";
+    private static final String EVENTOS = "eventos";
 
     private FirebaseFirestore db;
     private StorageReference storage;
@@ -181,10 +183,53 @@ public class Utilidades {
             }
         });
 
+
+        DocumentReference reference = db.collection(LOCALES).document(idLocal);
+
+        reference.update("productos", FieldValue.arrayUnion(productos.getId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, "producto asignado asignado", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return productos.getId();
 
 
     }
+
+    public String agregarEventoLocal(final Evento evento,String idLocal){
+
+        db.collection(EVENTOS).document(evento.getId()).set(evento).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, evento.getId(), Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "Fallo subida", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+        DocumentReference reference = db.collection(LOCALES).document(idLocal);
+
+        reference.update("productos", FieldValue.arrayUnion(evento.getId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, "evento asignado asignado", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        return evento.getId();
+
+
+    }
+
+
 }
 
 

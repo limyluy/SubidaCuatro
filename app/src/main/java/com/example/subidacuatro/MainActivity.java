@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.subidacuatro.Actividades.CrearCliente;
 import com.example.subidacuatro.Actividades.VerClientes;
+import com.example.subidacuatro.Actividades.VerEvento;
 import com.example.subidacuatro.Actividades.VerLocales;
 import com.example.subidacuatro.Actividades.VerProductos;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -84,6 +85,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, VerProductos.class);
                 startActivity(intent);
+            }
+        });
+
+        btnNuevoEvento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,VerLocales.class);
+                intent.putExtra("evento",true);
+                startActivity(intent);
+            }
+        });
+
+        crvEventos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, VerEvento.class));
             }
         });
 

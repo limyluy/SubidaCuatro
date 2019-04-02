@@ -31,6 +31,7 @@ public class Evento {
         this.categoria = categoria;
         this.fotos = fotos;
         this.locales = locales;
+        this.id = id;
     }
 
     public String getId() {
