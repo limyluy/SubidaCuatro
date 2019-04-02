@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/txt_nom_evento_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -23,34 +23,34 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
 
         <TextView
-            android:id="@+id/textView22"
+            android:id="@+id/txt_des_evento_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:text="Descripcion"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView20" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_nom_evento_card" />
 
         <TextView
-            android:id="@+id/textView23"
+            android:id="@+id/txt_ubi_eventos_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:text="Ubicacion"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView22" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_des_evento_card" />
 
         <TextView
-            android:id="@+id/textView25"
+            android:id="@+id/txt_fec_eventos_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:text="Fecha"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView23" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_ubi_eventos_card" />
 
         <TextView
             android:id="@+id/textView21"
@@ -60,9 +60,10 @@
             android:layout_marginLeft="8dp"
             android:text="Des Adicional"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView25" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_fec_eventos_card" />
 
         <TextView
+            android:id="@+id/txt_desadi_eventos_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -72,7 +73,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView21" />
 
         <TextView
-            android:id="@+id/textView24"
+            android:id="@+id/txt_esp_eventos_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -83,7 +84,7 @@
             android:lines="2"/>
 
         <TextView
-            android:id="@+id/textView26"
+            android:id="@+id/txt_cat_eventos_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -91,22 +92,22 @@
             android:lines="3"
             android:text="Categorias"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView24" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_esp_eventos_card" />
 
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btn_loc_eventos_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="32dp"
             android:layout_marginRight="32dp"
             android:text="Locales"
-            app:layout_constraintEnd_toStartOf="@+id/button2"
-            app:layout_constraintTop_toBottomOf="@+id/textView26" />
+            app:layout_constraintEnd_toStartOf="@+id/btn_fot_eventos_card"
+            app:layout_constraintTop_toBottomOf="@+id/txt_cat_eventos_card" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btn_fot_eventos_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -114,7 +115,7 @@
             android:layout_marginRight="8dp"
             android:text="Fotos"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView26" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_cat_eventos_card" />
 
 
 
