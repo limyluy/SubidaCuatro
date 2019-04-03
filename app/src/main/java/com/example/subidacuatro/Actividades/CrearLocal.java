@@ -310,7 +310,7 @@ public class CrearLocal extends AppCompatActivity {
 
 
 
-            Local local = new Local(idCli, nombre, direccion, telefono, descripcion, ubicacion, atencion, calidad, precio, tarjeta, garaje, garantia, imgLocal, imgLogo, numRecomendado, actualizado, productos, etiquetas, color);
+            Local local = new Local(idCli, nombre, direccion, telefono, descripcion, ubicacion, atencion, calidad, precio, tarjeta, garaje, garantia, imgLocal, imgLogo, numRecomendado, actualizado, productos, etiquetas, color,false);
 
 
           String idLocal = utilidades.llenarLocal(local);

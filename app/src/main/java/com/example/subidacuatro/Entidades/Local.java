@@ -26,32 +26,9 @@ public class Local {
     private List<String> productos;
     private List<String> etiquetas;
     private String color;
+    private Boolean ofertas;
 
     public Local() {
-    }
-
-    public Local(String idCliente, String nombre, String direccion, String telefono, String descripcion, GeoPoint ubicacion, int atencion, int calidad, int precio, boolean tarjeta, boolean garaje, boolean garantia, String imgLocal, String imgLogo, long numRecomendado, Boolean actualizado, List<String> productos, List<String> etiquetas, String color) {
-        String id = "locuno"+Math.random();
-        IdCliente = idCliente;
-        this.nombre = nombre;
-        this.direccion = direccion;
-        this.telefono = telefono;
-        this.descripcion = descripcion;
-        this.ubicacion = ubicacion;
-        this.atencion = atencion;
-        this.calidad = calidad;
-        this.precio = precio;
-        this.tarjeta = tarjeta;
-        this.garaje = garaje;
-        this.garantia = garantia;
-        this.imgLocal = imgLocal;
-        this.imgLogo = imgLogo;
-        this.numRecomendado = numRecomendado;
-        this.actualizado = actualizado;
-        this.productos = productos;
-        this.etiquetas = etiquetas;
-        this.color = color;
-        this.id = id;
     }
 
     public String getId() {
@@ -212,5 +189,40 @@ public class Local {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public Boolean getOfertas() {
+        return ofertas;
+    }
+
+    public void setOfertas(Boolean ofertas) {
+        this.ofertas = ofertas;
+    }
+
+    public Local(String idCliente, String nombre, String direccion, String telefono, String descripcion, GeoPoint ubicacion, int atencion, int calidad, int precio, boolean tarjeta, boolean garaje, boolean garantia, String imgLocal, String imgLogo, long numRecomendado, Boolean actualizado, List<String> productos, List<String> etiquetas, String color, Boolean ofertas) {
+        String id = "locuno"+Math.random();
+        IdCliente = idCliente;
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.descripcion = descripcion;
+        this.ubicacion = ubicacion;
+        this.atencion = atencion;
+        this.calidad = calidad;
+        this.precio = precio;
+        this.tarjeta = tarjeta;
+        this.garaje = garaje;
+        this.garantia = garantia;
+        this.imgLocal = imgLocal;
+        this.imgLogo = imgLogo;
+        this.numRecomendado = numRecomendado;
+        this.actualizado = actualizado;
+        this.productos = productos;
+        this.etiquetas = etiquetas;
+        this.color = color;
+        this.ofertas = ofertas;
+        this.id = id;
+
+
     }
 }
