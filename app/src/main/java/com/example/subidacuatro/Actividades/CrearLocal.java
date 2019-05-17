@@ -147,6 +147,7 @@ public class CrearLocal extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     crearLocalBd(idCliente);
+
                 }
             });
             btnAddEtiquetas.setOnClickListener(new View.OnClickListener() {
@@ -307,6 +308,7 @@ public class CrearLocal extends AppCompatActivity {
             }
 
             color = String.valueOf(mdefaultColor);
+            productos.add(nombre);
 
 
 
@@ -318,8 +320,21 @@ public class CrearLocal extends AppCompatActivity {
               utilidades.agregarlocalCliente(idLocal,idCliente);
           }
 
+            String tangs = "";
+            for (int i = 0; i < etiquetas.size(); i++)
+                if (i + 1 < etiquetas.size())
+                    tangs += etiquetas.get(i) +" ";
+                else
+                    tangs += etiquetas.get(i);
+
+
+
+          utilidades.subirAlgolia(nombre,direccion,descripcion,"Local Comercial",tangs);
+
             Toast.makeText(this, "Local Creado", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(CrearLocal.this, MainActivity.class));
+
+
 
 
         }

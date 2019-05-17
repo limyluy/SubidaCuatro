@@ -9,6 +9,8 @@ import android.webkit.MimeTypeMap;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.algolia.search.saas.Client;
+import com.algolia.search.saas.Index;
 import com.example.subidacuatro.Entidades.Cliente;
 import com.example.subidacuatro.Entidades.Evento;
 import com.example.subidacuatro.Entidades.Historial;
@@ -28,6 +30,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -44,11 +49,16 @@ public class Utilidades {
     private FirebaseFirestore db;
     private StorageReference storage;
 
+    Index index;
+
     private Context context;
 
     public Utilidades(Context context) {
         db = FirebaseFirestore.getInstance();
         this.context = context;
+
+        Client client = new Client("LXY84IU2VY", "6c9ae679bdfb1407717fc422cb2784a5");
+        index = client.getIndex("productos");
     }
 
     public String llenarCliente(final Cliente cliente) {
@@ -118,7 +128,7 @@ public class Utilidades {
         return local.getId();
     }
 
-    public void subirImagen (String carpeta, final Uri uri, final Context context, final TextView textView) {
+    public void subirImagen(String carpeta, final Uri uri, final Context context, final TextView textView) {
         storage = FirebaseStorage.getInstance().getReference(carpeta);
         StorageReference reference = storage.child(System.currentTimeMillis() + "."
                 + getFileExtencion(uri));
@@ -154,7 +164,7 @@ public class Utilidades {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
-    public void agregarlocalCliente(String idLocal,String idCliente) {
+    public void agregarlocalCliente(String idLocal, String idCliente) {
 
 
         DocumentReference reference = db.collection(CLIENTES).document(idCliente);
@@ -169,7 +179,7 @@ public class Utilidades {
 
     }
 
-    public String agregarProductoLocal(final Productos productos, String idLocal){
+    public String agregarProductoLocal(final Productos productos, String idLocal) {
 
         db.collection(PRODUCTOS).document(productos.getId()).set(productos).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -198,7 +208,7 @@ public class Utilidades {
 
     }
 
-    public String agregarEventoLocal(final Evento evento,String idLocal){
+    public String agregarEventoLocal(final Evento evento, String idLocal) {
 
         db.collection(EVENTOS).document(evento.getId()).set(evento).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -213,7 +223,6 @@ public class Utilidades {
         });
 
 
-
         DocumentReference reference = db.collection(LOCALES).document(idLocal);
 
         reference.update("productos", FieldValue.arrayUnion(evento.getId())).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -225,6 +234,31 @@ public class Utilidades {
 
 
         return evento.getId();
+
+
+    }
+
+    public String subirAlgolia(String nombre, String procedencia, String descripcion, String tipo,String tangs) {
+
+        JSONObject object = null;
+        try {
+            object = new JSONObject()
+                    .put("nombre", nombre)
+                    .put("procedencia", procedencia)
+                    .put("descripcion", descripcion)
+                    .put("tipo", tipo)
+                    .put("tangs",tangs);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String id = "001." + String.valueOf(System.currentTimeMillis());
+
+        index.addObjectAsync(object, id, null);
+
+        return id;
 
 
     }

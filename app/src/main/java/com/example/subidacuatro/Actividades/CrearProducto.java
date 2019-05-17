@@ -170,7 +170,18 @@ public class CrearProducto extends AppCompatActivity {
         Productos producto = new Productos(nombre,descripcion,marca,imgProducto,infAdicional,desAdicional,oferta,categoria,localesTiene,vesesBuscado);
 
         utilidades.agregarProductoLocal(producto,idLocal);
+
+        String tangs = "";
+        for (int i = 0; i < categoria.size(); i++)
+            if (i + 1 < categoria.size())
+                tangs += categoria.get(i) +" ";
+            else
+                tangs += categoria.get(i);
+
+        utilidades.subirAlgolia(nombre,marca,descripcion,"Producto", tangs);
         startActivity(new Intent(CrearProducto.this, MainActivity.class));
+
+
 
 
 

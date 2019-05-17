@@ -211,7 +211,17 @@ public class CrearEvento extends AppCompatActivity {
 
         Evento evento = new Evento(nombre,descripcion,ubicacion,fecha,desAdicional,especificaciones,categoria,fotos,locales);
         utilidades.agregarEventoLocal(evento,idLocal);
+
+
+        String tangs = "";
+        for (int i = 0; i < categoria.size(); i++)
+            if (i + 1 < categoria.size())
+                tangs += categoria.get(i) +" ";
+            else
+                tangs += categoria.get(i);
+        utilidades.subirAlgolia(nombre,fecha,descripcion,"Evento",tangs);
         startActivity(new Intent(CrearEvento.this, MainActivity.class));
+
 
 
 
