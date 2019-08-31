@@ -22,7 +22,8 @@ public class CrearCliente extends AppCompatActivity {
     private EditText edtNombre;
     private EditText edtTelefono;
     private EditText edtDireccion;
-    private boolean trazado;
+    private EditText edtIdentificacion;
+    private boolean atrazado;
     private Button btnCrear;
     private Button btnCancelar;
 
@@ -36,6 +37,7 @@ public class CrearCliente extends AppCompatActivity {
         setContentView(R.layout.activity_crear_cliente);
 
         edtNombre = findViewById(R.id.edt_nom_cliente);
+        edtIdentificacion = findViewById(R.id.edt_ide_cliente);
         edtTelefono = findViewById(R.id.edt_tel_cliente);
         edtDireccion = findViewById(R.id.edt_dir_cliente);
         btnCrear = findViewById(R.id.btn_crear_nuevocliente);
@@ -52,10 +54,11 @@ public class CrearCliente extends AppCompatActivity {
                     Toast.makeText(CrearCliente.this, "Datos insificientes", Toast.LENGTH_SHORT).show();
                 } else {
                     String nombre = edtNombre.getText().toString();
+                    String identificacion = edtIdentificacion.getText().toString();
                     String telefono = edtTelefono.getText().toString();
                     String direccion = edtDireccion.getText().toString();
                     List<String> locales = new ArrayList<>();
-                    Cliente cliente = new Cliente(nombre,direccion,telefono,false,locales);
+                    Cliente cliente = new Cliente(nombre,identificacion,direccion,telefono,false,locales);
                     utilidades.llenarCliente(cliente);
                     startActivity(new Intent(CrearCliente.this, MainActivity.class));
 

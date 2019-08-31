@@ -16,6 +16,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductoAdaptador extends FirestoreRecyclerAdapter<Productos, ProductoAdaptador.ProductosViewHolder> {
@@ -30,15 +31,16 @@ public class ProductoAdaptador extends FirestoreRecyclerAdapter<Productos, Produ
     @Override
     protected void onBindViewHolder(@NonNull ProductosViewHolder holder, int position, @NonNull Productos model) {
 
-        List<String> etiquetas = model.getCategoria();
+        ArrayList<String> etiquetas = model.getCategorias();
         String resultados = "";
-        for (int i = 0; i < etiquetas.size(); i++)
+       for (int i = 0; i < etiquetas.size(); i++)
             if (i + 1 < etiquetas.size()) {
                 resultados += etiquetas.get(i) + " | ";
             }else{
                 resultados += etiquetas.get(i);
                 holder.categorias.setText(resultados);
             }
+
 
         holder.nombre.setText(model.getNombre());
         holder.descripcion.setText(model.getDescripcion());

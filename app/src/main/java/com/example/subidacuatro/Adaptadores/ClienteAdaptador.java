@@ -36,6 +36,7 @@ public class ClienteAdaptador extends FirestoreRecyclerAdapter<Cliente, ClienteA
         holder.nombre.setText(model.getNombre());
         holder.telefono.setText(model.getTelefono());
         holder.direccion.setText(model.getDireccion());
+        holder.identificacion.setText(model.getIdentificacion());
         holder.numLocales.setText(String.valueOf(numero));
 
     }
@@ -52,6 +53,7 @@ public class ClienteAdaptador extends FirestoreRecyclerAdapter<Cliente, ClienteA
         TextView nombre;
         TextView telefono;
         TextView direccion;
+        TextView identificacion;
         TextView numLocales;
 
         public ClienteViewHolder(@NonNull View itemView) {
@@ -60,6 +62,7 @@ public class ClienteAdaptador extends FirestoreRecyclerAdapter<Cliente, ClienteA
             nombre = itemView.findViewById(R.id.txt_nom_card_cliente);
             telefono = itemView.findViewById(R.id.txt_tel_card_cliente);
             direccion = itemView.findViewById(R.id.txt_dir_card_cliente);
+            identificacion = itemView.findViewById(R.id.txt_ide_card_cliente);
             numLocales = itemView.findViewById(R.id.txt_numlocales_card_cliente);
 
             itemView.setOnClickListener(new View.OnClickListener() {

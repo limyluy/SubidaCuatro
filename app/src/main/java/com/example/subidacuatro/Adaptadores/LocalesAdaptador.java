@@ -62,10 +62,10 @@ public class LocalesAdaptador extends FirestoreRecyclerAdapter<Local, LocalesAda
         holder.garage.setChecked(model.isGaraje());
         holder.targeta.setChecked(model.isTarjeta());
         holder.garantia.setChecked(model.isGarantia());
-        Picasso.with(context).load(model.getImgLocal()).into(holder.imgLocal);
+        Picasso.with(context).load(model.getImagenesLocal().get(0)).into(holder.imgLocal);
         Picasso.with(context).load(model.getImgLogo()).into(holder.imgLogo);
         holder.imgColor.setBackgroundColor(Integer.parseInt(model.getColor()));
-        holder.txtNumProductos.setText(String.valueOf( model.getProductos().size()));
+        holder.txtNumProductos.setText(String.valueOf( model.getEtiquetas().size()));
 
     }
 

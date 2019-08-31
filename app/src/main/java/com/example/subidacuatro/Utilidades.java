@@ -66,16 +66,14 @@ public class Utilidades {
         db.collection(CLIENTES).document(cliente.getId()).set(cliente).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(context, "Cliete " + cliente.getId() + "creado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Cliete " + cliente.getNombre() + "creado", Toast.LENGTH_SHORT).show();
                 Calendar c = Calendar.getInstance();
                 c.getTimeInMillis();
-                Historial historial = new Historial("Ingreso cliente", cliente.getNombre(), c.toString(), cliente.getId());
-                llenarHistorial(historial);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "Fallo en subida", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Fallo ", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -142,7 +140,7 @@ public class Utilidades {
                 Task task = taskSnapshot.getStorage().getDownloadUrl();
                 while (!task.isSuccessful()) ;
                 Uri uri1 = (Uri) task.getResult();
-                Toast.makeText(context, "Imagen Subida", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Imagen Subida ", Toast.LENGTH_SHORT).show();
 
                 textView.setText(String.valueOf(uri1));
 

@@ -27,7 +27,7 @@ public class EventoAdaptador extends FirestoreRecyclerAdapter<Evento, EventoAdap
 
     @Override
     protected void onBindViewHolder(@NonNull EvetoViewHolder holder, int position, @NonNull Evento model) {
-        List<String> categoria = model.getCategoria();
+        List<String> categoria = model.getTangs();
         String resultados = "";
         for (int i = 0; i < categoria.size(); i++)
             if (i + 1 < categoria.size()) {

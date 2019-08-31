@@ -8,27 +8,22 @@
 
     <EditText
         android:id="@+id/edt_nom_producto"
-        android:layout_width="match_parent"
+        android:layout_width="326dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:hint="Nombre Producto"
         android:inputType="textCapWords"
         android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/too_crear_producto" />
 
 
     <EditText
         android:id="@+id/edt_marca_producto"
-        android:layout_width="match_parent"
+        android:layout_width="374dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
@@ -36,8 +31,7 @@
         android:inputType="textCapWords"
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_nom_producto" />
+        app:layout_constraintTop_toBottomOf="@+id/too_crear_producto" />
 
 
     <EditText

@@ -1,6 +1,8 @@
 package com.example.subidacuatro.Entidades;
 
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class Cliente {
@@ -9,20 +11,24 @@ public class Cliente {
     private String nombre;
     private String direccion;
     private String telefono;
+    private String identificacion;
     private boolean atrazado;
     private List<String> locales;
 
     public Cliente() {
     }
 
-    public Cliente(String nombre, String direccion, String telefono, boolean atrazado, List<String> locales) {
 
-        String id = "cliuno" + Math.random();
+    public Cliente(String nombre, String direccion, String telefono, String identificacion, boolean atrazado, List<String> locales) {
 
-        this.id = id;
+        Date tiempoActual = Calendar.getInstance().getTime();
+        String cliente = nombre + String.valueOf(tiempoActual.getDate());
+
+        this.id = cliente.replaceAll(" ","_");
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
+        this.identificacion = identificacion;
         this.atrazado = atrazado;
         this.locales = locales;
     }
@@ -57,6 +63,14 @@ public class Cliente {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getIdentificacion() {
+        return identificacion;
+    }
+
+    public void setIdentificacion(String identificacion) {
+        this.identificacion = identificacion;
     }
 
     public boolean isAtrazado() {

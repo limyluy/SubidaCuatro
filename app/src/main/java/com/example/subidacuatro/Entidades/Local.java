@@ -2,12 +2,15 @@ package com.example.subidacuatro.Entidades;
 
 import com.google.firebase.firestore.GeoPoint;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class Local {
 
     private String id;
-    private String IdCliente;
+    private String idCliente;
     private String nombre;
     private String direccion;
     private String telefono;
@@ -19,17 +22,47 @@ public class Local {
     private boolean tarjeta;
     private boolean garaje;
     private boolean garantia;
-    private String imgLocal;
     private String imgLogo;
+    private ArrayList<String> imagenesLocal;
+    private ArrayList<String> etiquetas;
+    private ArrayList<String> productos;
     private long numRecomendado;
     private Boolean actualizado;
-    private List<String> productos;
-    private List<String> etiquetas;
     private String color;
     private Boolean ofertas;
 
     public Local() {
     }
+
+
+    public Local(String idCliente, String nombre, String direccion, String telefono, String descripcion, GeoPoint ubicacion, int atencion, int calidad, int precio, boolean tarjeta, boolean garaje, boolean garantia, String imgLogo, ArrayList<String> imagenesLocal, ArrayList<String> etiquetas, ArrayList<String> productos, long numRecomendado, Boolean actualizado, String color, Boolean ofertas) {
+
+        Date tiempoActual = Calendar.getInstance().getTime();
+        String local = nombre + String.valueOf(tiempoActual.getDate());
+
+        this.id = local;
+        this.idCliente = idCliente;
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.descripcion = descripcion;
+        this.ubicacion = ubicacion;
+        this.atencion = atencion;
+        this.calidad = calidad;
+        this.precio = precio;
+        this.tarjeta = tarjeta;
+        this.garaje = garaje;
+        this.garantia = garantia;
+        this.imgLogo = imgLogo;
+        this.imagenesLocal = imagenesLocal;
+        this.etiquetas = etiquetas;
+        this.productos = productos;
+        this.numRecomendado = numRecomendado;
+        this.actualizado = actualizado;
+        this.color = color;
+        this.ofertas = ofertas;
+    }
+
 
     public String getId() {
         return id;
@@ -40,11 +73,11 @@ public class Local {
     }
 
     public String getIdCliente() {
-        return IdCliente;
+        return idCliente;
     }
 
     public void setIdCliente(String idCliente) {
-        IdCliente = idCliente;
+        this.idCliente = idCliente;
     }
 
     public String getNombre() {
@@ -135,20 +168,36 @@ public class Local {
         this.garantia = garantia;
     }
 
-    public String getImgLocal() {
-        return imgLocal;
-    }
-
-    public void setImgLocal(String imgLocal) {
-        this.imgLocal = imgLocal;
-    }
-
     public String getImgLogo() {
         return imgLogo;
     }
 
     public void setImgLogo(String imgLogo) {
         this.imgLogo = imgLogo;
+    }
+
+    public ArrayList<String> getImagenesLocal() {
+        return imagenesLocal;
+    }
+
+    public void setImagenesLocal(ArrayList<String> imagenesLocal) {
+        this.imagenesLocal = imagenesLocal;
+    }
+
+    public ArrayList<String> getEtiquetas() {
+        return etiquetas;
+    }
+
+    public void setEtiquetas(ArrayList<String> etiquetas) {
+        this.etiquetas = etiquetas;
+    }
+
+    public ArrayList<String> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(ArrayList<String> productos) {
+        this.productos = productos;
     }
 
     public long getNumRecomendado() {
@@ -167,22 +216,6 @@ public class Local {
         this.actualizado = actualizado;
     }
 
-    public List<String> getProductos() {
-        return productos;
-    }
-
-    public void setProductos(List<String> productos) {
-        this.productos = productos;
-    }
-
-    public List<String> getEtiquetas() {
-        return etiquetas;
-    }
-
-    public void setEtiquetas(List<String> etiquetas) {
-        this.etiquetas = etiquetas;
-    }
-
     public String getColor() {
         return color;
     }
@@ -197,32 +230,5 @@ public class Local {
 
     public void setOfertas(Boolean ofertas) {
         this.ofertas = ofertas;
-    }
-
-    public Local(String idCliente, String nombre, String direccion, String telefono, String descripcion, GeoPoint ubicacion, int atencion, int calidad, int precio, boolean tarjeta, boolean garaje, boolean garantia, String imgLocal, String imgLogo, long numRecomendado, Boolean actualizado, List<String> productos, List<String> etiquetas, String color, Boolean ofertas) {
-        String id = "locuno"+Math.random();
-        IdCliente = idCliente;
-        this.nombre = nombre;
-        this.direccion = direccion;
-        this.telefono = telefono;
-        this.descripcion = descripcion;
-        this.ubicacion = ubicacion;
-        this.atencion = atencion;
-        this.calidad = calidad;
-        this.precio = precio;
-        this.tarjeta = tarjeta;
-        this.garaje = garaje;
-        this.garantia = garantia;
-        this.imgLocal = imgLocal;
-        this.imgLogo = imgLogo;
-        this.numRecomendado = numRecomendado;
-        this.actualizado = actualizado;
-        this.productos = productos;
-        this.etiquetas = etiquetas;
-        this.color = color;
-        this.ofertas = ofertas;
-        this.id = id;
-
-
     }
 }

@@ -145,8 +145,8 @@ public class CrearProducto extends AppCompatActivity {
          String infAdicional = "";
          String desAdicional = "";
          Boolean oferta = chbOferta.isChecked();
-         List<String> categoria = etiquetasArreglo;
-         List<String> localesTiene = new ArrayList<>();
+         ArrayList<String> categoria = (ArrayList<String>) etiquetasArreglo;
+         ArrayList<String> localesTiene = new ArrayList<>();
          long vesesBuscado = 0;
 
          if (!(edtMarca.getText().toString().isEmpty())){

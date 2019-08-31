@@ -13,14 +13,14 @@ public class Evento {
     private String fecha;
     private String desAdicional;
     private String especificaciones;
-    private List<String> categoria;
+    private List<String> tangs;
     private List<String> fotos;
     private List<String> locales;
 
     public Evento() {
     }
 
-    public Evento(String nombre, String descripcion, GeoPoint ubicacion, String fecha, String desAdicional, String especificaciones, List<String> categoria, List<String> fotos, List<String> locales) {
+    public Evento(String nombre, String descripcion, GeoPoint ubicacion, String fecha, String desAdicional, String especificaciones, List<String> tangs, List<String> fotos, List<String> locales) {
         String id = "eveuno"+Math.random();
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -28,7 +28,7 @@ public class Evento {
         this.fecha = fecha;
         this.desAdicional = desAdicional;
         this.especificaciones = especificaciones;
-        this.categoria = categoria;
+        this.tangs = tangs;
         this.fotos = fotos;
         this.locales = locales;
         this.id = id;
@@ -90,12 +90,12 @@ public class Evento {
         this.especificaciones = especificaciones;
     }
 
-    public List<String> getCategoria() {
-        return categoria;
+    public List<String> getTangs() {
+        return tangs;
     }
 
-    public void setCategoria(List<String> categoria) {
-        this.categoria = categoria;
+    public void setTangs(List<String> tangs) {
+        this.tangs = tangs;
     }
 
     public List<String> getFotos() {

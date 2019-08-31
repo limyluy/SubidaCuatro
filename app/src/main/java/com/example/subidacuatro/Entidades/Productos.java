@@ -1,5 +1,9 @@
 package com.example.subidacuatro.Entidades;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class Productos {
@@ -7,33 +11,36 @@ public class Productos {
     private String id;
     private String nombre;
     private String descripcion;
-    private String Marca;
+    private String marca;
     private String imgProducto;
     private String infAdicional;
     private String desAdicional;
     private Boolean oferta;
-    private List<String> categoria;
-    private List<String> localesTiene;
+    private ArrayList<String> categorias;
+    private ArrayList<String> localesTiene;
     private long vesesBuscado;
 
 
     public Productos() {
     }
 
-    public Productos(String nombre, String descripcion, String marca, String imgProducto, String infAdicional, String desAdicional, Boolean oferta, List<String> categoria, List<String> localesTiene, long vesesBuscado) {
+    public Productos(String nombre, String descripcion, String marca, String imgProducto, String infAdicional, String desAdicional, Boolean oferta, ArrayList<String> categorias, ArrayList<String> localesTiene, long vesesBuscado) {
 
-        String id = "prouno"+Math.random();
+        Date tiempoActual = Calendar.getInstance().getTime();
+        String producto = nombre + String.valueOf(tiempoActual.getDate());
+        producto.replaceAll(" ","_");
+
+        this.id = producto;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        Marca = marca;
+        this.marca = marca;
         this.imgProducto = imgProducto;
         this.infAdicional = infAdicional;
         this.desAdicional = desAdicional;
         this.oferta = oferta;
-        this.categoria = categoria;
+        this.categorias = categorias;
         this.localesTiene = localesTiene;
         this.vesesBuscado = vesesBuscado;
-        this.id = id;
     }
 
     public String getId() {
@@ -61,11 +68,11 @@ public class Productos {
     }
 
     public String getMarca() {
-        return Marca;
+        return marca;
     }
 
     public void setMarca(String marca) {
-        Marca = marca;
+        this.marca = marca;
     }
 
     public String getImgProducto() {
@@ -100,19 +107,19 @@ public class Productos {
         this.oferta = oferta;
     }
 
-    public List<String> getCategoria() {
-        return categoria;
+    public ArrayList<String> getCategorias() {
+        return categorias;
     }
 
-    public void setCategoria(List<String> categoria) {
-        this.categoria = categoria;
+    public void setCategorias(ArrayList<String> categorias) {
+        this.categorias = categorias;
     }
 
-    public List<String> getLocalesTiene() {
+    public ArrayList<String> getLocalesTiene() {
         return localesTiene;
     }
 
-    public void setLocalesTiene(List<String> localesTiene) {
+    public void setLocalesTiene(ArrayList<String> localesTiene) {
         this.localesTiene = localesTiene;
     }
 
